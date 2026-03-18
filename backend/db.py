@@ -15,8 +15,8 @@ def save(mariadb, file_path):
 def main():
   mariadb_engine = create_engine(settings.mariadb_host)
   with mariadb_engine.connect() as conn:
-    conn.execute(text("TRUNCATE TABLE seoul_metro_temp"))
-    conn.commit()
+    # conn.execute(text("TRUNCATE TABLE seoul_metro_temp"))
+    # conn.commit()
 
     folder_path = settings.file_dir
     files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
