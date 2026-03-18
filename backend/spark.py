@@ -6,7 +6,6 @@ from settings import settings
 
 engine_mariadb = create_engine(settings.mariadb_host)
 
-print('시작1')
 # 생성된 테이블 확인
 def table_check():
     inspector = inspect(engine_mariadb)
