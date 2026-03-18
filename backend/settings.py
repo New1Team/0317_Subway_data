@@ -5,6 +5,8 @@ class Settings(BaseSettings):
   file_dir: str
   host_ip:str
   spark_url:str
+  jar_path:str
+  db_url:str
 
   model_config = SettingsConfigDict(
     env_file=".env",
