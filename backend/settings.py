@@ -3,6 +3,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
   mariadb_host: str 
   file_dir: str
+  host_ip:str
+  spark_url:str
 
   model_config = SettingsConfigDict(
     env_file=".env",
