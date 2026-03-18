@@ -2,8 +2,9 @@ import os
 from sqlalchemy import create_engine, inspect
 from pyspark.sql import SparkSession
 import pandas as pd
+from settings import settings
 
-engine_mariadb = create_engine('mysql+pymysql://root:1234@192.168.0.201:3306/seoul_metro')
+engine_mariadb = create_engine(settings.mariadb_host)
 
 print('시작1')
 # 생성된 테이블 확인
