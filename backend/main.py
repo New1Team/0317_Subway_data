@@ -1,13 +1,26 @@
 from pyspark.sql import SparkSession, Row
 from sqlalchemy import create_engine, inspect
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from settings import settings
 import os
 from pydantic import BaseModel
 from typing import List, Dict
+from data import router as data_router
+
+
 
 app = FastAPI()
+
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=["http://localhost:5173"],
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
+)
+app.include_router(data_router)
 
 spark = None
 engine_mariadb = create_engine(settings.mariadb_host)
@@ -99,3 +112,4 @@ def read(fileCon: FileList):
   print("개수 ", check_df.count())
   check_df.show()
   return {'message': '적재 성공✨'}
+
