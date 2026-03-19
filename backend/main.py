@@ -11,6 +11,7 @@ app = FastAPI()
 
 spark = None
 engine_mariadb = create_engine(settings.mariadb_host)
+# Base Model
 
 # 파일별 컬럼 매핑 모델
 class ColsMapping(BaseModel):
@@ -18,11 +19,11 @@ class ColsMapping(BaseModel):
   source_col:str
   # 변경할 컬럼명
   target_col:str
-
 # 파일명, 매핑리스트 모델
 class FileList(BaseModel):
   file: Dict[str, List[ColsMapping]]
 
+# API 함수
 @app.on_event("startup")
 def startup_event():
   global spark
@@ -51,19 +52,11 @@ def shutdown_event():
 
 @app.get("/")
 def read_root():
-  if not spark:
-    return {"status": False, "error": "Spark session not initialized"}
-  try:
-    df = pd.read_csv(settings.file_dir, encoding="cp949", header=0, thousands=',', quotechar='"', skipinitialspace=True)
-    spDf = spark.createDataFrame(df)    
-    result = spDf.limit(50).toPandas().to_dict(orient="records")
-    return {"status": True, "data": result}
-  except Exception as e:
-    return {"status": False, "error": str(e)}
+  return {"status": True}
 
 # 파일마다 컬럼 정할 수 있게 만들었습니다.
 # 사용방법은 md로 넣어둘게요.
-@app.post('/coordinate')
+@app.post('/file_upload')
 def read(fileCon: FileList):
   current_path = os.path.dirname(os.path.abspath(__file__))
   data_path = os.path.join(current_path, "data")
@@ -105,4 +98,4 @@ def read(fileCon: FileList):
   check_df = spark.read.jdbc(settings.db_url, table="coordinate", properties=db_properties)
   print("개수 ", check_df.count())
   check_df.show()
-
+  return {'message': '적재 성공✨'}
