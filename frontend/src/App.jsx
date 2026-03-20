@@ -1,11 +1,13 @@
 import { Routes, Route } from "react-router"
 import NotFound from '@pages/NotFound.jsx'
 import Maps from '@pages/Maps.jsx'
+import Card from '@pages/Card.jsx'
 
 
 const paths = [
-  { path: "/", element: <Maps/> },
+  { path: "/map", element: <Maps/> },
   { path: "*", element: <NotFound /> },
+  {path: "/", element: <Card />},
 ]
 
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { api } from '@utils/network.js'
 
-const Maps = () => {
+const Maps = ({year}) => {
   const [map, setMap] = useState(null); // 지도 객체 저장
   const [info, setInfo] = useState(null); // 클릭한 마커의 상세 정보
   const [markers, setMarkers] = useState([]); // 검색된 마커 리스트
@@ -17,16 +17,16 @@ const Maps = () => {
 
   // 카테고리 변경 시 실행
   useEffect(() => {
-    if (!map) return
+    if (!map|| !currCategory) {
+      setMarkers([])
+      return
+    }
 
     // 카테고리로 장소 검색 (현재 지도 바운드 내에서)
     // 여기 data = db에서 불러오기
-    api.get('/data')
+    api.get('/data',{params:{year, category: currCategory}})
       .then(res => {
         const mapData = res.data.data
-        return mapData
-      })
-      .then(mapData => {
         const formatData = mapData.map((item, index) => ({
           id: `subway-${index}`,
           lat: item.위도,
@@ -38,7 +38,7 @@ const Maps = () => {
         setMarkers(formatData)
       })
 
-  }, [map])
+  }, [map, currCategory, year])
 
   // 카테고리 버튼 클릭 함수
   const handleCategoryClick = (id) => {

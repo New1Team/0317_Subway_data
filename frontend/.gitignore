@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# env
+.env
+.env.*
+!.env.example
+
+# data 폴더 제외
+data/
