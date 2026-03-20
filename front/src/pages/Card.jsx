@@ -29,21 +29,24 @@ const Card = () => {
       setLoading(true);
       try {
         const [mapRes, kpiRes] = await Promise.all([
-          axios.get(`http://localhost:8000/data?year=${selectedYear}`),
-          axios.get(`http://localhost:8000/data/kpi?year=${selectedYear}`)
+          axios.get(`http://localhost:8000/api/subway/data?year=${selectedYear}`),
+          // axios.get(`http://localhost:8000/api/kpi?year=${selectedYear}`)
         ]);
 
         // 데이터 가공 및 상태 저장
         const formatData = mapRes.data.data.map((item, index) => ({
           id: item.id || `subway-${index}`,
-          lat: item.lat || item.위도,
-          lng: item.lng || item.경도,
+          lat: Number(item.위도 ?? item.위도),
+          lng: Number(item.경도 ?? item.경도),
           title: item.station_nm || item.역명,
           ...item
         }));
+        console.log("API 응답 원본:", mapRes.data.data[0]);  // 원본 키 이름 확인
+        console.log("가공된 데이터:", formatData[0]);         // lat/lng 값 확인
+        console.log("마커 개수:", formatData.length);
 
         setMarkers(formatData);
-        setKpiData(kpiRes.data.data);
+        // setKpiData(kpiRes.data.data);
       } catch (error) {
         console.error("데이터 로드 실패:", error);
       } finally {

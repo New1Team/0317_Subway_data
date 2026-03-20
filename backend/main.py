@@ -7,7 +7,7 @@ from settings import settings
 import os
 from pydantic import BaseModel
 from typing import List, Dict
-from data import router as data_router
+from data import router as router
 
 
 
@@ -20,7 +20,7 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
-app.include_router(data_router)
+app.include_router(router, prefix="/api/subway")
 
 spark = None
 engine_mariadb = create_engine(settings.mariadb_host)

@@ -6,11 +6,10 @@ router = APIRouter()
 
 
 
-@router.get('/kpi')
-def get_data(year: int = 2021):
+@router.get('/data')
+def get_data():
   sql='''SELECT s.`역명`, c.`위도`, c.`경도` FROM station_timeband_summary AS s 
         JOIN coordinate AS c
-        ON (s.역번호 = c.`역번호`);
-        WHERE year = {year};'''
+        ON s.역번호 = c.`역번호`'''
   data = findAll(sql)
   return {'data': data}
