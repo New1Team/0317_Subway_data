@@ -43,7 +43,7 @@ def startup_event():
   try:
     jar_path = settings.jar_path
     spark = SparkSession.builder \
-      .appName("뚜아") \
+      .appName("khy") \
       .master(settings.spark_url) \
       .config("spark.jars", jar_path) \
       .config("spark.driver.host", settings.host_ip) \
